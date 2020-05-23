@@ -1,0 +1,17 @@
+#You do changes in Dockerfile
+When you make a workdirectory and get inside the container then bydefault this directory will open.
+If you have created some files and want them to be executed once the docker is up then you need to copy those files from file directory to container directory.
+The command for that copy is:
+COPY ./ ./
+You include this command before the run command.
+
+Now, suppose there are two files (package.json and node.js) to be copied and you have changed code file (node.js) then docker will execute all those commands and create new images from COPY (included this as well) till the end, though you havn't changed anything in FS snapshot files.
+So the better thing is to split COPY command.
+COPY ./package.json ./
+RUN npm install
+COPY ./ ./
+
+Once you split the copy command, it will see that there is no modification in package.json file so it will not create new image of npm install.
+
+
+
